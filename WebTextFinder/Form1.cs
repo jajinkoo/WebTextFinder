@@ -8,7 +8,23 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Net.Mail;
-                
+
+/*
+// 수정 사항 
+1. 변경시 메일로 보내지 말고 리스트 창에 뿌려준다. 
+2. 새로 고침 단위를 초단위로 
+3. 크롬 기반으로 변경 하기( webBrowser는 익스플로러 7용임 요즘은 잘 안씀 )
+4. 차트 상의 변화 내용을 텍스트로 출력한다. 
+5. 민 맥스를 정하고 알려준다. 
+
+구현 내용 
+1. 종목을 열어 준다. 
+2. 새로 고침 을 일정 주기 별로한다. 
+3. 크롬 기반으로 연다. 
+4. 차트 상의 변화 내용을 텍스트로 출력한다. 
+5. 민 맥스를 정하고 알려준다. 
+6. 여러개 항목으로 동작 할수 있게 한다. 
+*/
 
 
 namespace WebTextFinder
@@ -184,7 +200,9 @@ namespace WebTextFinder
 
         private void button_test_Click(object sender, EventArgs e)
         {
-            if (textBox_id.Text.ToLower().EndsWith("@naver.com") == false)
+         
+           // if (textBox_id.Text.ToLower().EndsWith("@naver.com") == false)
+            if(textBox_id.Text.ToLower().EndsWith("@naver.com") == false)
             {
                 MessageBox.Show("[실패]\n\n알림을 받을 수 있는 메일은 네이버 메일만 가능합니다.\n\n다시 메일을 작성해주세요.", "웹사이트 변경 알리미");
                 return;
@@ -210,7 +228,7 @@ namespace WebTextFinder
 
         private void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
-            textBox_uri.Text = e.Url.ToString();
+            textBox_uri.Text = e.Url.ToString();  
         }
 
         private void radioButton1_Click(object sender, EventArgs e)
@@ -220,7 +238,11 @@ namespace WebTextFinder
 
         private void button_go_Click(object sender, EventArgs e)
         {
-            webBrowser1.Navigate(textBox_uri.Text);
+            if (textBox_uri.Text == "")
+                return;
+            else
+                webBrowser1.Navigate(textBox_uri.Text);
+            
         }
 
         private void textBox_uri_KeyUp(object sender, KeyEventArgs e)
