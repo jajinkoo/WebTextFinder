@@ -30,14 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.textBox_conHide = new System.Windows.Forms.TextBox();
             this.textBox_conShow = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.radioButton_conHide = new System.Windows.Forms.RadioButton();
-            this.radioButton_conShow = new System.Windows.Forms.RadioButton();
             this.label4 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.radioButton_start = new System.Windows.Forms.RadioButton();
@@ -66,6 +63,10 @@
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel_lastFindOk = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -80,16 +81,6 @@
             this.panel9.SuspendLayout();
             this.SuspendLayout();
             // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1180, 497);
-            this.webBrowser1.TabIndex = 0;
-            this.webBrowser1.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser1_Navigated);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.panel8);
@@ -103,11 +94,11 @@
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.checkBox2);
+            this.panel8.Controls.Add(this.checkBox1);
             this.panel8.Controls.Add(this.textBox_conHide);
             this.panel8.Controls.Add(this.textBox_conShow);
             this.panel8.Controls.Add(this.pictureBox1);
-            this.panel8.Controls.Add(this.radioButton_conHide);
-            this.panel8.Controls.Add(this.radioButton_conShow);
             this.panel8.Controls.Add(this.label4);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel8.Location = new System.Drawing.Point(0, 92);
@@ -146,30 +137,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
-            // 
-            // radioButton_conHide
-            // 
-            this.radioButton_conHide.AutoSize = true;
-            this.radioButton_conHide.Location = new System.Drawing.Point(537, 15);
-            this.radioButton_conHide.Name = "radioButton_conHide";
-            this.radioButton_conHide.Size = new System.Drawing.Size(235, 16);
-            this.radioButton_conHide.TabIndex = 4;
-            this.radioButton_conHide.Text = "페이지 새로고침 후 이 단어가 사라지면";
-            this.radioButton_conHide.UseVisualStyleBackColor = true;
-            this.radioButton_conHide.Click += new System.EventHandler(this.radioButton1_Click);
-            // 
-            // radioButton_conShow
-            // 
-            this.radioButton_conShow.AutoSize = true;
-            this.radioButton_conShow.Checked = true;
-            this.radioButton_conShow.Location = new System.Drawing.Point(123, 15);
-            this.radioButton_conShow.Name = "radioButton_conShow";
-            this.radioButton_conShow.Size = new System.Drawing.Size(235, 16);
-            this.radioButton_conShow.TabIndex = 4;
-            this.radioButton_conShow.TabStop = true;
-            this.radioButton_conShow.Text = "페이지 새로고침 후 이 단어가 나타나면";
-            this.radioButton_conShow.UseVisualStyleBackColor = true;
-            this.radioButton_conShow.Click += new System.EventHandler(this.radioButton1_Click);
             // 
             // label4
             // 
@@ -239,7 +206,7 @@
             0,
             0});
             this.numericUpDown_interval.Minimum = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             0});
@@ -260,7 +227,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(132, 26);
             this.label6.TabIndex = 7;
-            this.label6.Text = "새로고침 간격(분)";
+            this.label6.Text = "새로고침 간격(초)";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button_test
@@ -476,17 +443,55 @@
             // 
             this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel9.Controls.Add(this.webBrowser1);
-            this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel9.Location = new System.Drawing.Point(0, 139);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(1184, 501);
+            this.panel9.Size = new System.Drawing.Size(749, 501);
             this.panel9.TabIndex = 3;
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Location = new System.Drawing.Point(3, 4);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(747, 497);
+            this.webBrowser1.TabIndex = 0;
+            this.webBrowser1.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser1_Navigated);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 12;
+            this.listBox1.Location = new System.Drawing.Point(755, 141);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(429, 496);
+            this.listBox1.TabIndex = 4;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(122, 15);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(236, 16);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "페이지 새로고침 후 이 단어가 나타나면";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(537, 16);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(236, 16);
+            this.checkBox2.TabIndex = 7;
+            this.checkBox2.Text = "페이지 새로고침 후 이 단어가 사라지면";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 662);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.panel9);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel1);
@@ -517,8 +522,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton radioButton_stop;
         private System.Windows.Forms.RadioButton radioButton_start;
@@ -550,10 +553,12 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.TextBox textBox_conHide;
         private System.Windows.Forms.TextBox textBox_conShow;
-        private System.Windows.Forms.RadioButton radioButton_conHide;
-        private System.Windows.Forms.RadioButton radioButton_conShow;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

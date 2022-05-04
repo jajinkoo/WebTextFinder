@@ -11,11 +11,10 @@ using System.Net.Mail;
 
 /*
 // 수정 사항 
-1. 변경시 메일로 보내지 말고 리스트 창에 뿌려준다. 
-2. 새로 고침 단위를 초단위로 
-3. 크롬 기반으로 변경 하기( webBrowser는 익스플로러 7용임 요즘은 잘 안씀 )
-4. 차트 상의 변화 내용을 텍스트로 출력한다. 
-5. 민 맥스를 정하고 알려준다. 
+1. 변경시 메일로 보내지 말고 리스트 창에 뿌려준다.  ok
+2. 새로 고침 단위를 초단위로  ok
+3. 크롬 기반으로 변경 하기( webBrowser는 익스플로러 7용임 요즘은 잘 안씀 ) 이건 추후
+4. 다중 선택으로 변경 ok
 
 필요한 내용  
 1. 종목을 열어 준다. 
@@ -31,6 +30,9 @@ namespace WebTextFinder
 {
     public partial class Form1 : Form
     {
+
+        bool bUseList = true;
+
         string saveURL = "";
 
         public Form1()
@@ -40,6 +42,13 @@ namespace WebTextFinder
             this.StartPosition = FormStartPosition.CenterScreen;
             this.ShowInTaskbar = false;
             this.MinimumSize = new Size(1200, 700);
+
+            //리스트 초가화 
+            listBox1.Items.Clear();
+
+            SetStartEndButton();
+
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -62,8 +71,11 @@ namespace WebTextFinder
             webBrowser1.Visible = false;
             button_test.Enabled = false;
 
-            radioButton_conShow.Enabled = false;
-            radioButton_conHide.Enabled = false;
+
+
+            checkBox1.Enabled = false;
+            checkBox2.Enabled = false;
+
             textBox_conShow.Enabled = false;
             textBox_conHide.Enabled = false;
 
@@ -74,7 +86,7 @@ namespace WebTextFinder
 
             timer1_Tick(null,null);
 
-            timer1.Interval = (int)numericUpDown_interval.Value * 60000;
+            timer1.Interval = (int)numericUpDown_interval.Value * 1000;
             timer1.Start();
         }
 
@@ -88,8 +100,8 @@ namespace WebTextFinder
             button_test.Enabled = true;
             numericUpDown_interval.Enabled = true;
 
-            radioButton_conShow.Enabled = true;
-            radioButton_conHide.Enabled = true;
+            checkBox1.Enabled = true;
+            checkBox2.Enabled = true;
             textBox_conShow.Enabled = true;
             textBox_conHide.Enabled = true;
 
@@ -123,25 +135,46 @@ namespace WebTextFinder
             }
 
             toolStripStatusLabel_lastFind.Text = getNowTimeString();
-
-            if (radioButton_conShow.Checked)
+            if(checkBox1.Checked)
             {
                 if (htmlBody.Contains(textBox_conShow.Text.ToLower()) == true)
                 {
-                    toolStripStatusLabel_lastFindOk.Text = getNowTimeString();
-                    sendMail("[성공] 웹사이트 변경 알리미", textBox_conShow.Text + "  단어 출현 발생\n\n검사를 성공하여 이제 웹사이트 변경 알리미 프로그램은 중단합니다.");
-                    radioButton_stop_Click(null, null);
-                    MessageBox.Show("갱신 중인 페이지에서 단어 출현을 감지했습니다.\n\n스캔을 중단합니다.\n\n알림 이메일 발송 완료\n\n검사 성공 시각:" + getNowTimeString(), "웹사이트 변경 알리미");
+                    if (bUseList)
+                    {
+                        string strTemp = string.Format("생성 {0}", textBox_conShow.Text);
+                        InsertItemToList(strTemp);
+                    }
+                    else
+                    {
+                        toolStripStatusLabel_lastFindOk.Text = getNowTimeString();
+                        sendMail("[성공] 웹사이트 변경 알리미", textBox_conShow.Text + "  단어 출현 발생\n\n검사를 성공하여 이제 웹사이트 변경 알리미 프로그램은 중단합니다.");
+                        radioButton_stop_Click(null, null);
+                        MessageBox.Show("갱신 중인 페이지에서 단어 출현을 감지했습니다.\n\n스캔을 중단합니다.\n\n알림 이메일 발송 완료\n\n검사 성공 시각:" + getNowTimeString(), "웹사이트 변경 알리미");
+                    }
+
                 }
             }
-            else if (radioButton_conHide.Checked)
+            if (checkBox2.Checked)
             {
+
                 if (htmlBody.Contains(textBox_conHide.Text.ToLower()) == false)
                 {
-                    toolStripStatusLabel_lastFindOk.Text = getNowTimeString();
-                    sendMail("[성공] 웹사이트 변경 알리미", textBox_conHide.Text + "  단어 사라짐 발생\n\n검사를 성공하여 이제 웹사이트 변경 알리미 프로그램은 중단합니다.");
-                    radioButton_stop_Click(null, null);
-                    MessageBox.Show("갱신 중인 페이지에서 단어 사라짐을 감지했습니다.\n\n스캔을 중단합니다.\n\n알림 이메일 발송 완료\n\n검사 성공 시각:" + getNowTimeString(), "웹사이트 변경 알리미");
+
+                    if (bUseList)
+                    {
+                        string strTemp = string.Format("사라짐 {0}", textBox_conHide.Text);
+                        InsertItemToList(strTemp);
+                    }
+                    else
+                    {
+                        toolStripStatusLabel_lastFindOk.Text = getNowTimeString();
+                        sendMail("[성공] 웹사이트 변경 알리미", textBox_conHide.Text + "  단어 사라짐 발생\n\n검사를 성공하여 이제 웹사이트 변경 알리미 프로그램은 중단합니다.");
+                        radioButton_stop_Click(null, null);
+                        MessageBox.Show("갱신 중인 페이지에서 단어 사라짐을 감지했습니다.\n\n스캔을 중단합니다.\n\n알림 이메일 발송 완료\n\n검사 성공 시각:" + getNowTimeString(), "웹사이트 변경 알리미");
+                    }
+
+
+
                 }
             }
         }
@@ -252,6 +285,24 @@ namespace WebTextFinder
                 button_go_Click(null, null);
             }
         }
+
+        void InsertItemToList(string strTemp)
+        {
+            listBox1.Items.Add(strTemp);
+            listBox1.SelectedIndex = listBox1.Items.Count - 1;
+        }
+        bool SetStartEndButton()
+        {
+            if(bUseList)
+            {
+                radioButton_start.Enabled = true;
+                radioButton_stop.Enabled = true;
+                label5.ForeColor = Color.Black;
+            }
+            return true;
+        }
+
+
 
 
     }
